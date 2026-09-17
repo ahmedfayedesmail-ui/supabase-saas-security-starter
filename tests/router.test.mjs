@@ -13,5 +13,5 @@ test('A/B router exists and honors explicit UTM variant plus sticky storage', as
   assert.ok(html.includes("localStorage.getItem('saas_validation_variant')"));
   assert.ok(html.includes("localStorage.setItem('saas_validation_variant', variant)"));
   assert.ok(html.includes("Math.random() < 0.5 ? 'A' : 'B'"));
-  assert.ok(html.includes("location.replace(`./${variant.toLowerCase()}/`"));
+  assert.ok(html.includes("location.replace(`./${variant.toLowerCase()}/${suffix}`)"));
 });
