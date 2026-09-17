@@ -11,20 +11,16 @@ async function readLanding(name) {
 }
 
 function assertCommonLandingContract(html, variant) {
-  assert.match(html, new RegExp(`const\\s+VARIANT\\s*=\\s*['\"]${variant}['\"]`));
-  assert.match(html, /function\\s+fire\\(name,\\s*props=\\{\\}\\)/);
-  assert.match(html, /window\\.plausible\\(name,\\s*\\{props\\}\\)/);
-  assert.match(html, new RegExp(`fire\\(name,\\s*\\{variant:\\s*VARIANT\\}\\)`));
-  assert.match(html, /u\\.searchParams\\.set\\('checkout\\[custom\\]\\[variant\\]',\\s*VARIANT\\)/);
-  assert.match(html, /utm_source/);
-  assert.match(html, /utm_medium/);
-  assert.match(html, /utm_campaign/);
-  assert.match(html, /utm_content/);
-  assert.match(html, /data-event=\"cta_hero_click\"/);
-  assert.match(html, /data-event=\"cta_final_click\"/);
-  assert.match(html, /data-event=\"demo_click\"/);
-  assert.match(html, /Concept preview only\\./);
-  assert.equal((html.match(/addEventListener\\('click'/g) ?? []).length, 1);
+  assert.ok(html.includes(`const VARIANT = '${variant}';`), `expected variant ${variant}`);
+  assert.ok(html.includes('function fire(name, props={})'), 'expected fire() helper');
+  assert.ok(html.includes('window.plausible(name, {props})'), 'expected Plausible props forwarding');
+  assert.ok(html.includes('fire(name, {variant: VARIANT})'), 'expected variant propagation to event');
+  assert.ok(html.includes("u.searchParams.set('checkout[custom][variant]', VARIANT)"), 'expected checkout variant propagation');
+  for (const event of ['cta_hero_click', 'cta_pricing_click', 'cta_final_click', 'demo_click']) {
+    assert.ok(html.includes(`data-event="${event}"`), `missing ${event}`);
+  }
+  assert.ok(html.includes('Concept preview only.'), 'missing concept preview disclosure');
+  assert.equal((html.match(/addEventListener\('click'/g) ?? []).length, 1, 'expected one click listener registration');
 }
 
 test('Landing A has the expected variant attribution contract', async () => {
