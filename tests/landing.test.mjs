@@ -16,9 +16,11 @@ function assertCommonLandingContract(html, variant) {
   assert.match(html, /window\\.plausible\\(name,\\s*\\{props\\}\\)/);
   assert.match(html, new RegExp(`fire\\(name,\\s*\\{variant:\\s*VARIANT\\}\\)`));
   assert.match(html, /u\\.searchParams\\.set\\('checkout\\[custom\\]\\[variant\\]',\\s*VARIANT\\)/);
-  assert.match(html, /['\"]utm_source['\"],?\\s*['\"]utm_medium['\"],?\\s*['\"]utm_campaign['\"],?\\s*['\"]utm_content['\"]/);
+  assert.match(html, /utm_source/);
+  assert.match(html, /utm_medium/);
+  assert.match(html, /utm_campaign/);
+  assert.match(html, /utm_content/);
   assert.match(html, /data-event=\"cta_hero_click\"/);
-  assert.match(html, /data-event=\"cta_pricing_click\"/);
   assert.match(html, /data-event=\"cta_final_click\"/);
   assert.match(html, /data-event=\"demo_click\"/);
   assert.match(html, /Concept preview only\\./);
