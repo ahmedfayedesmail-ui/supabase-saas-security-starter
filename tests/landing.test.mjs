@@ -19,7 +19,7 @@ test('Landing A has the expected variant attribution contract', async () => {
   assert.match(html, /data-event="cta_pricing_click"/);
   assert.match(html, /data-event="cta_final_click"/);
   assert.match(html, /data-event="demo_click"/);
-  assert.match(html, /CONCEPT PREVIEW — NOT FINAL PRODUCT\./);
+  assert.match(html, /Concept Preview — NOT FINAL PRODUCT\./);
   assert.equal((html.match(/addEventListener\('click'/g) ?? []).length, 1);
 });
 
@@ -32,6 +32,6 @@ test('Landing B has the expected variant attribution contract', async () => {
   assert.match(html, /data-event="cta_pricing_click"/);
   assert.match(html, /data-event="cta_final_click"/);
   assert.match(html, /data-event="demo_click"/);
-  assert.match(html, /CONCEPT PREVIEW — NOT FINAL PRODUCT\./);
+  assert.match(html, /Concept Preview — NOT FINAL PRODUCT\./);
   assert.equal((html.match(/addEventListener\('click'/g) ?? []).length, 1);
 });
