@@ -1,1 +1,103 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ship your multi-tenant SaaS faster</title><script defer data-domain="YOURDOMAIN" src="https://plausible.io/js/script.js"></script></head><body><main><h1>Ship your multi-tenant SaaS faster.</h1><p>Next.js + Supabase starter with Auth, Organizations, RBAC, Billing, and Admin — wired and ready to build on.</p><a href="https://YOURSTORE.lemonsqueezy.com/checkout/buy/UUID?checkout%5Bcustom%5D%5Bvariant%5D=B" data-event="cta_hero_click">Get Early Access — $99</a><a href="#pricing" data-event="cta_pricing_click">View pricing</a><a href="#demo" data-event="demo_click">60-second walkthrough</a><section id="demo"><p>Concept Preview — NOT FINAL PRODUCT.</p></section><section id="pricing"><h2>Founder’s Early Access — $99</h2><a href="https://YOURSTORE.lemonsqueezy.com/checkout/buy/UUID?checkout%5Bcustom%5D%5Bvariant%5D=B" data-event="cta_final_click">Start building</a></section></main><script>const VARIANT='B';document.querySelectorAll('[data-event]').forEach(el=>el.addEventListener('click',()=>window.plausible&&plausible(el.dataset.event,{props:{variant:VARIANT}})));[25,50,75,100].forEach(pct=>{let fired=false;window.addEventListener('scroll',()=>{const s=(scrollY+innerHeight)/document.body.scrollHeight*100;if(s>=pct&&!fired){fired=true;window.plausible&&plausible('scroll_depth',{props:{depth:pct,variant:VARIANT}})}})});</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Validation-stage landing page for a planned Supabase multi-tenant SaaS starter with explicit RLS and tenant-isolation verification.">
+  <title>Verify tenant isolation before your users find the bug | Supabase SaaS Security Starter</title>
+  <script defer data-domain="YOURDOMAIN" src="https://plausible.io/js/script.js"></script>
+  <style>
+    :root{--bg:#080d18;--panel:#10182a;--panel2:#0d1424;--text:#f5f7ff;--muted:#aeb7cf;--line:#27324c;--accent:#9aa7ff;--accent2:#8ef1c8;--warn:#ffd28e;--max:1080px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 80% 0%,#1d2440 0,#0a0f1b 40%,#070b13 100%);color:var(--text);font:16px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}.wrap{max-width:var(--max);margin:auto;padding:0 22px}.nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}.brand{font-weight:800}.navlinks{display:flex;gap:18px;color:var(--muted);font-size:14px}.navlinks a:hover{color:var(--text)}
+    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid #36405b;background:#121a2d;color:#d6dcf0;border-radius:999px;padding:7px 11px;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:var(--accent2)}.hero{padding:64px 0 54px;text-align:center}.hero h1{margin:18px auto;max-width:900px;font-size:clamp(42px,7vw,72px);line-height:1.02;letter-spacing:-2.7px}.hero p{max-width:780px;margin:0 auto;color:var(--muted);font-size:clamp(18px,3vw,22px)}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:30px 0 14px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:13px 19px;font-weight:750;border:1px solid var(--line);cursor:pointer}.btn.primary{background:var(--text);color:#0a1020;border-color:var(--text)}.btn.secondary{background:#121a30;color:var(--text)}.micro{color:#818da8;font-size:13px}.status{margin:30px auto 0;max-width:780px;padding:13px 16px;border:1px solid #4e402b;background:#1b1710;color:var(--warn);border-radius:12px;font-size:13px}.section{padding:58px 0}.eyebrow{color:#92a1c2;text-transform:uppercase;letter-spacing:1.6px;font-size:12px;font-weight:800}.section h2{font-size:34px;line-height:1.15;margin:10px 0 26px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:22px}.card h3{margin:0 0 7px;font-size:18px}.card p{margin:0;color:var(--muted)}.icon{font-size:20px;margin-bottom:14px}.problem{display:grid;grid-template-columns:1.1fr .9fr;gap:28px}.problem p{color:var(--muted);font-size:18px}.quote{border-left:2px solid var(--accent);padding-left:18px;color:#e1e6f7;font-size:20px}.flow{display:grid;gap:12px}.step{display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:start}.num{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#171f37;border:1px solid var(--line);font-weight:800;color:#dfe5fb}.step p{margin:3px 0 0;color:var(--muted)}.demo{border:1px solid var(--line);border-radius:18px;background:#070c16;padding:28px}.terminal{background:#050812;border:1px solid #1d2942;border-radius:12px;padding:16px;color:#a8f0cd;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.terminal .dim{color:#687591}.pricing{display:grid;grid-template-columns:1fr .9fr;gap:18px}.price{font-size:54px;font-weight:850;letter-spacing:-2px}.price small{font-size:16px;letter-spacing:0;color:var(--muted);font-weight:500}.checks{display:grid;gap:10px;color:#d8e0f1}.checks span::before{content:"✓";color:var(--accent2);font-weight:900;margin-right:10px}.faq{display:grid;gap:12px}.faq details{border:1px solid var(--line);border-radius:12px;padding:15px 17px;background:#0f1528}.faq summary{cursor:pointer;font-weight:700}.faq p{color:var(--muted);margin:10px 0 0}.footer{padding:28px 0 46px;border-top:1px solid var(--line);color:#7f8ba6;font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}.footer a{text-decoration:underline;text-underline-offset:3px}@media(max-width:800px){.grid,.pricing,.problem{grid-template-columns:1fr}.navlinks{display:none}.hero{text-align:left;padding-top:44px}.hero .actions{justify-content:flex-start}.hero h1{letter-spacing:-1.7px}.section{padding:44px 0}.price{font-size:46px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav"><div class="brand">Supabase SaaS Security Starter</div><div class="navlinks"><a href="#verification">Verification</a><a href="#demo">Preview</a><a href="#pricing">Pricing</a></div></nav>
+
+    <header class="hero">
+      <span class="pill"><span class="dot"></span>Validation-stage Early Access</span>
+      <h1>Verify tenant isolation before your users find the bug.</h1>
+      <p>A planned Supabase multi-tenant SaaS starter with explicit RLS and tenant-isolation tests, plus the same core SaaS foundation you need to start building.</p>
+      <div class="actions">
+        <a class="btn primary" href="#pricing" data-event="cta_hero_click">Get Early Access — $99</a>
+        <a class="btn secondary" href="#demo" data-event="demo_click">See the 60-second preview</a>
+      </div>
+      <div class="micro">Concept preview only. Tests shown here are illustrative until the real Early Access suite is shipped and independently run.</div>
+      <div class="status">Checkout connection is being prepared for paid validation. No payment is requested from this page until the real Lemon Squeezy checkout URL is configured.</div>
+    </header>
+
+    <section class="section">
+      <div class="problem"><div><div class="eyebrow">The risk</div><h2>Multi-tenant SaaS has one rule you cannot casually break.</h2><p>Tenant A must not read Tenant B’s data. RLS can enforce that boundary, but a policy is easier to trust when the important access paths are also written down and tested.</p></div><div class="quote">“Security verification is part of the product proposition — not a blanket claim that every application is secure.”</div></div>
+    </section>
+
+    <section class="section" id="verification">
+      <div class="eyebrow">Planned verification layer</div><h2>Make the tested security boundary explicit.</h2>
+      <div class="grid">
+        <article class="card"><div class="icon">🧪</div><h3>RLS tenant-isolation tests</h3><p>Explicit scenarios for cross-tenant reads and other access paths that the Early Access suite is intended to verify.</p></article>
+        <article class="card"><div class="icon">📋</div><h3>Audit activity</h3><p>Documented privileged actions and tenant context are part of the planned foundation so operational activity has a clearer trail.</p></article>
+        <article class="card"><div class="icon">🛡</div><h3>Security checklist</h3><p>A practical pre-launch checklist covering the configuration and verification steps that should be reviewed before release.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow">Intended workflow</div><h2>From organization setup to verified access boundaries.</h2>
+      <div class="flow">
+        <div class="step"><div class="num">1</div><div><strong>Create an organization</strong><p>Set up a tenant boundary and invite a teammate.</p></div></div>
+        <div class="step"><div class="num">2</div><div><strong>Switch tenant context</strong><p>Use the same application while keeping tenant data scoped.</p></div></div>
+        <div class="step"><div class="num">3</div><div><strong>Exercise the access rules</strong><p>Run the defined RLS scenarios, including negative cross-tenant cases.</p></div></div>
+        <div class="step"><div class="num">4</div><div><strong>Review the evidence</strong><p>Keep the tested paths and expected outcomes documented for repeatable checks.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="demo">
+      <div class="eyebrow">Concept preview</div><h2>See the verification idea before the product exists.</h2>
+      <div class="demo"><div class="terminal"><div>$ npm test</div><div>✓ cross-tenant read denied for Tenant A → Tenant B</div><div>✓ unauthorized role denied on privileged action</div><div>✓ webhook signature rejects a tampered raw body</div><div class="dim">MOCK PREVIEW — not a live product test suite</div></div><p style="color:var(--muted);margin:16px 0 0">Any results shown here are mock preview output. Real evidence will come only from the shipped test suite and the validation environment.</p></div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="eyebrow">Paid validation offer</div><h2>Founder’s Early Access</h2>
+      <div class="pricing">
+        <article class="card"><div class="price">$99 <small>one-time validation price</small></div><p style="color:var(--muted);margin:10px 0 22px">The offer covers the planned digital starter kit and its documented security-verification layer.</p><div class="checks"><span>Full source code in the planned Early Access release</span><span>Founder license for personal and client projects</span><span>Documentation and setup guidance</span><span>Full refund if the stated ship-by commitment is not met</span></div><div class="actions" style="justify-content:flex-start"><a class="btn primary" href="#" data-event="cta_final_click" data-checkout="true">Start building</a></div></article>
+        <article class="card"><h3>What this validation is testing</h3><p>Variant B tests whether security verification and explicit tenant-isolation evidence are a stronger purchase trigger than a speed-focused message.</p><p style="margin-top:14px;color:#d3dbee"><strong>Ship-by commitment:</strong> December 16, 2026.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow">FAQ</div><h2>Important limits</h2>
+      <div class="faq">
+        <details><summary>Does the test suite prove the whole application is secure?</summary><p>No. It can only provide evidence for the scenarios that are actually implemented and executed. Security claims must stay bounded by the tested scope.</p></details>
+        <details><summary>Is the product already built?</summary><p>No. This is a paid validation page. Product development remains blocked until the validation gate is passed.</p></details>
+        <details><summary>Why compare Speed vs Security?</summary><p>Both pages describe the same intended product and price. Only the primary value proposition changes so we can observe which problem framing creates stronger paid demand.</p></details>
+        <details><summary>When is the planned release due?</summary><p>The current ship-by commitment is December 16, 2026. If it is not met, the Early Access terms call for a full refund.</p></details>
+      </div>
+    </section>
+
+    <footer class="footer"><span>Validation-stage site • Variant B (Security)</span><span><a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="refund.html">Refund</a></span></footer>
+  </div>
+
+  <script>
+    const VARIANT = 'B';
+    const CHECKOUT_BASE = 'https://YOURSTORE.lemonsqueezy.com/checkout/buy/UUID';
+    const tracked = new Set();
+    function fire(name, props={}) { if (tracked.has(name + JSON.stringify(props))) return; tracked.add(name + JSON.stringify(props)); if (window.plausible) window.plausible(name, {props}); }
+    document.querySelectorAll('[data-event]').forEach(el => el.addEventListener('click', e => {
+      const name = el.dataset.event;
+      fire(name, {variant: VARIANT});
+      if (el.dataset.checkout === 'true') {
+        e.preventDefault();
+        if (CHECKOUT_BASE.includes('YOURSTORE') || CHECKOUT_BASE.endsWith('/UUID')) {
+          alert('Checkout is not connected yet. Paid validation will open here after the real Lemon Squeezy checkout URL is configured.');
+          return;
+        }
+        const u = new URL(CHECKOUT_BASE);
+        u.searchParams.set('checkout[custom][variant]', VARIANT);
+        ['utm_source','utm_medium','utm_campaign','utm_content'].forEach(k => { const v = new URLSearchParams(location.search).get(k); if (v) u.searchParams.set('checkout[custom]['+k+']', v); });
+        window.location.href = u.toString();
+      }
+    }));
+    [25,50,75,100].forEach(pct => { let fired=false; window.addEventListener('scroll', () => { const scrolled=((scrollY+innerHeight)/document.body.scrollHeight)*100; if(scrolled>=pct&&!fired){fired=true;fire('scroll_depth',{depth:pct,variant:VARIANT});} }, {passive:true}); });
+  </script>
+</body>
+</html>
