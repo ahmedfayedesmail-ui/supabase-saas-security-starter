@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   }
 
   let event;
-  try { event = JSON.parse(rawBody); }
+  try { event = JSON.parse(rawBody.toString('utf8')); }
   catch { return res.status(400).json({ error: 'invalid_json' }); }
 
   if (event?.meta?.event_name !== 'order_created') {
@@ -31,21 +31,27 @@ export default async function handler(req, res) {
 
   const total = event?.data?.attributes?.total;
   const currency = event?.data?.attributes?.currency || 'USD';
-  if (typeof total !== 'number') return res.status(400).json({ error: 'missing_total' });
+  if (typeof total !== 'number') {
+    await unmarkProcessed(orderId);
+    return res.status(400).json({ error: 'missing_total' });
+  }
 
   const domain = process.env.PLAUSIBLE_DOMAIN;
-  const url = `https://${process.env.YOURDOMAIN}/${variant.toLowerCase()}`;
-  const plausiblePayload = {
-    name: 'checkout_paid',
-    domain,
-    url,
-    props: { variant },
-    revenue: { currency, amount: total / 100 }
-  };
+  const siteDomain = process.env.YOURDOMAIN;
+  if (!domain || !siteDomain) {
+    await unmarkProcessed(orderId);
+    return res.status(500).json({ error: 'missing_plausible_config' });
+  }
+
+  const url = `https://${siteDomain}/${variant.toLowerCase()}`;
+  const plausiblePayload = buildPlausiblePayload({ domain, url, variant, currency, totalCents: total });
 
   const response = await fetch('https://plausible.io/api/event', {
     method: 'POST',
-    headers: {'Content-Type':'application/json','User-Agent':req.headers['user-agent'] || 'ls-webhook'},
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': req.headers['user-agent'] || 'ls-webhook'
+    },
     body: JSON.stringify(plausiblePayload)
   });
 
@@ -57,13 +63,23 @@ export default async function handler(req, res) {
   return res.status(200).json({ ok: true, variant, orderId });
 }
 
-async function readRawBody(req) {
+export function buildPlausiblePayload({ domain, url, variant, currency, totalCents }) {
+  return {
+    name: 'checkout_paid',
+    domain,
+    url,
+    props: { variant },
+    revenue: { currency, amount: totalCents / 100 }
+  };
+}
+
+export async function readRawBody(req) {
   const chunks = [];
   for await (const chunk of req) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
   return Buffer.concat(chunks);
 }
 
-function verifySignature(rawBody, signature, secret) {
+export function verifySignature(rawBody, signature, secret) {
   if (!signature || !secret) return false;
   const expected = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
   const a = Buffer.from(expected, 'utf8');
@@ -72,5 +88,12 @@ function verifySignature(rawBody, signature, secret) {
 }
 
 const processedOrders = new Set();
-async function checkAndMarkProcessed(orderId) { if (processedOrders.has(orderId)) return true; processedOrders.add(orderId); return false; }
-async function unmarkProcessed(orderId) { processedOrders.delete(orderId); }
+export async function checkAndMarkProcessed(orderId) {
+  if (processedOrders.has(orderId)) return true;
+  processedOrders.add(orderId);
+  return false;
+}
+
+export async function unmarkProcessed(orderId) {
+  processedOrders.delete(orderId);
+}
