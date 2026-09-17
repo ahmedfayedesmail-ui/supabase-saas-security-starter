@@ -10,28 +10,25 @@ async function readLanding(name) {
   return fs.readFile(path.join(root, 'landing', name), 'utf8');
 }
 
+function assertCommonLandingContract(html, variant) {
+  assert.match(html, new RegExp(`const\\s+VARIANT\\s*=\\s*['\"]${variant}['\"]`));
+  assert.match(html, /function\\s+fire\\(name,\\s*props=\\{\\}\\)/);
+  assert.match(html, /window\\.plausible\\(name,\\s*\\{props\\}\\)/);
+  assert.match(html, new RegExp(`fire\\(name,\\s*\\{variant:\\s*VARIANT\\}\\)`));
+  assert.match(html, /u\\.searchParams\\.set\\('checkout\\[custom\\]\\[variant\\]',\\s*VARIANT\\)/);
+  assert.match(html, /['\"]utm_source['\"],?\\s*['\"]utm_medium['\"],?\\s*['\"]utm_campaign['\"],?\\s*['\"]utm_content['\"]/);
+  assert.match(html, /data-event=\"cta_hero_click\"/);
+  assert.match(html, /data-event=\"cta_pricing_click\"/);
+  assert.match(html, /data-event=\"cta_final_click\"/);
+  assert.match(html, /data-event=\"demo_click\"/);
+  assert.match(html, /Concept preview only\\./);
+  assert.equal((html.match(/addEventListener\\('click'/g) ?? []).length, 1);
+}
+
 test('Landing A has the expected variant attribution contract', async () => {
-  const html = await readLanding('index-a.html');
-  assert.match(html, /const\s+VARIANT\s*=\s*['"]A['"]/);
-  assert.match(html, /props:\s*\{\s*variant:\s*VARIANT\s*\}/);
-  assert.match(html, /checkout%5Bcustom%5D%5Bvariant%5D=A/);
-  assert.match(html, /data-event="cta_hero_click"/);
-  assert.match(html, /data-event="cta_pricing_click"/);
-  assert.match(html, /data-event="cta_final_click"/);
-  assert.match(html, /data-event="demo_click"/);
-  assert.match(html, /Concept Preview — NOT FINAL PRODUCT\./);
-  assert.equal((html.match(/addEventListener\('click'/g) ?? []).length, 1);
+  assertCommonLandingContract(await readLanding('index-a.html'), 'A');
 });
 
 test('Landing B has the expected variant attribution contract', async () => {
-  const html = await readLanding('index-b.html');
-  assert.match(html, /const\s+VARIANT\s*=\s*['"]B['"]/);
-  assert.match(html, /props:\s*\{\s*variant:\s*VARIANT\s*\}/);
-  assert.match(html, /checkout%5Bcustom%5D%5Bvariant%5D=B/);
-  assert.match(html, /data-event="cta_hero_click"/);
-  assert.match(html, /data-event="cta_pricing_click"/);
-  assert.match(html, /data-event="cta_final_click"/);
-  assert.match(html, /data-event="demo_click"/);
-  assert.match(html, /Concept Preview — NOT FINAL PRODUCT\./);
-  assert.equal((html.match(/addEventListener\('click'/g) ?? []).length, 1);
+  assertCommonLandingContract(await readLanding('index-b.html'), 'B');
 });
