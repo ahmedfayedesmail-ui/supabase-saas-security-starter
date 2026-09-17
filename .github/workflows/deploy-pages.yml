@@ -1,0 +1,62 @@
+name: Deploy validation site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare static validation site
+        shell: bash
+        run: |
+          mkdir -p site/a site/b
+          cp landing/index-a.html site/a/index.html
+          cp landing/index-b.html site/b/index.html
+          cat > site/index.html <<'EOF'
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width,initial-scale=1">
+              <title>Supabase SaaS Security Starter — Validation</title>
+              <style>body{font-family:system-ui,sans-serif;max-width:760px;margin:60px auto;padding:0 20px;line-height:1.5}a{display:block;margin:16px 0}</style>
+            </head>
+            <body>
+              <h1>Supabase SaaS Security Starter</h1>
+              <p>Validation-stage landing pages.</p>
+              <a href="./a/">Landing A — Speed</a>
+              <a href="./b/">Landing B — Security</a>
+            </body>
+          </html>
+          EOF
+          touch site/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
